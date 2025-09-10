@@ -21,18 +21,16 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/lib/prisma-master": ["./lib/prisma-master"],
-      "@/lib/prisma-project": ["./lib/prisma-project"]
+      "@/*": ["*"],
+      "@/lib/prisma-master": ["app/lib/prisma-master"],
+      "@/lib/prisma-project": ["app/lib/prisma-project"]
     }
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
     "src",
-    "prisma-client"
+    "src/app/lib/prisma-master",
+    "src/app/lib/prisma-project"
   ],
   "exclude": ["node_modules"]
 }

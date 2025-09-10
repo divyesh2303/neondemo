@@ -1,7 +1,8 @@
 import type {
   Status as PrismaStatus,
   Priority as PrismaPriority,
-} from "@/lib/prisma-project";
+} from "../app/lib/prisma-project";
+
 export type Status = PrismaStatus;
 export type Priority = PrismaPriority;
 
