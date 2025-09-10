@@ -7,12 +7,14 @@
     "build": "prisma generate && prisma generate --schema=prisma-project/projectSchema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "db:push": "prisma db push",
+    "db:push": "prisma db push --schema=prisma-project/projectSchema.prisma",
     "db:generate": "prisma generate && prisma generate --schema=prisma-project/projectSchema.prisma",
     "generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma",
     "prisma:generate:master": "prisma generate --schema=prisma/schema.prisma",
     "prisma:generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma",
-    "prisma:generate": "npm run prisma:generate:master && npm run prisma:generate:project"
+    "prisma:generate": "npm run prisma:generate:master && npm run prisma:generate:project",
+    "migrate:dev": "prisma migrate dev --schema=prisma-project/projectSchema.prisma",
+    "migrate:deploy": "prisma migrate deploy --schema=prisma-project/projectSchema.prisma"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
