@@ -1,6 +1,6 @@
 import * as server from "next/server";
-import { chatWithGemini } from "@/app/lib/ai";
-import { getProjectClient } from "@/app/lib/getProjectClient";
+import { chatWithGemini } from "../../lib/ai";
+import { getProjectClient } from "../../lib/getProjectClient";
 
 export async function POST(req: server.NextRequest) {
   try {
