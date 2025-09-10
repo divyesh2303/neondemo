@@ -8,12 +8,12 @@ export async function initializeProjectDatabase(
   console.log("📍 Database URL:", databaseUrl.replace(/:([^:@]+)@/, ":****@")); // Hide password in logs
 
   try {
-    // Run Prisma migration
-    console.log("🚀 Running Prisma migration...");
+    console.log("🚀 Running Prisma migrations...");
 
     try {
+      // Run Prisma migrations instead of db push
       execSync(
-        `npx prisma db push  --schema=prisma-project/projectSchema.prisma`,
+        `prisma migrate deploy --schema=prisma-project/projectSchema.prisma`,
         {
           stdio: "inherit",
           env: {
@@ -23,15 +23,15 @@ export async function initializeProjectDatabase(
         }
       );
 
-      console.log("✅ Database migration completed successfully");
-    } catch (pushError) {
-      console.log("⚠️ Schema migration failed...", pushError);
+      console.log("✅ Database migrations applied successfully");
+    } catch (migrateError) {
+      console.error("⚠️ Migration failed...", migrateError);
     }
   } catch (error) {
     console.error("❌ Failed to initialize project database:", error);
   } finally {
-    console.error(
-      "Migration performed for creating the USER table in DB of newly created Neon Project"
+    console.log(
+      "Migration step attempted for creating the USER table in DB of newly created Neon Project"
     );
   }
 }
