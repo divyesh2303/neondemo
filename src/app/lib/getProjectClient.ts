@@ -1,12 +1,13 @@
 // src/app/lib/getProjectClient.ts
-import { prisma, getProjectPrismaClient } from "@/app/lib/prisma";
+import { prismaMaster } from "./prisma-master";
+import { getProjectPrismaClient } from "./prisma-project";
 
 /**
  * Get a Prisma client connected to a project's database
  */
 export async function getProjectClient(projectId: number) {
   // Find project in Master DB
-  const project = await prisma.project.findUnique({
+  const project = await prismaMaster.project.findUnique({
     where: { id: projectId },
   });
 
