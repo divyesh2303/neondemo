@@ -1,5 +1,5 @@
 // Use the generated Prisma client from prisma-project
-import { PrismaClient } from "../../../lib/prisma-project";
+import { PrismaClient } from "../lib/project-client";
 
 const globalForProject = globalThis as unknown as {
   projectClients?: Map<string, PrismaClient>;
