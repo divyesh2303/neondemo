@@ -1,6 +1,6 @@
 // lib/project-init.ts
 import { execSync } from "child_process";
-import path from "path";
+ 
 
 export async function initializeProjectDatabase(
   databaseUrl: string
@@ -12,10 +12,10 @@ export async function initializeProjectDatabase(
     console.log("🚀 Running Prisma migrations...");
 
     // Resolve the local Prisma binary path
-    const prismaBinary = path.resolve("node_modules/.bin/prisma");
+     
 
     execSync(
-      `${prismaBinary} migrate deploy --schema=prisma-project/projectSchema.prisma`,
+      `npx prisma migrate deploy --schema=prisma-project/projectSchema.prisma`,
       {
         stdio: "inherit",
         env: {
