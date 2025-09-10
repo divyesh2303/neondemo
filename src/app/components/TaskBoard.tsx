@@ -14,7 +14,7 @@ import {
   getTasks,
   updateTaskStatus,
 } from "../actions/task-actions";
-import type { Status, Priority } from "@/types";
+import type { Status, Priority } from "../../types";
 
 type Task = {
   id: string;

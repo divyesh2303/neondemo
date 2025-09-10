@@ -1,8 +1,8 @@
 // src/app/actions/group-actions.ts
 "use server";
 
-import { prismaMaster } from "@/app/lib/prisma-master"; // ✅ master client
-import { getProjectPrismaClient } from "@/app/lib/prisma-project"; // ✅ project client
+import { prismaMaster } from "../lib/prisma-master"; // ✅ master client
+import { getProjectPrismaClient } from "../lib/prisma-project"; // ✅ project client
 
 type GroupLite = {
   id: string;

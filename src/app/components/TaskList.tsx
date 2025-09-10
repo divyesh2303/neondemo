@@ -2,8 +2,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { createTask } from "@/app/actions/task-actions";
-import type { Task } from "@/types";
+import { createTask } from "../actions/task-actions";
+import type { Task } from "../../types";
 const statusColumns = ["todo", "in-progress", "done", "error"];
 
 export default function TaskBoard({

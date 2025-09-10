@@ -3,7 +3,7 @@
 
 import React, { useState, useTransition } from "react";
 import { Plus } from "lucide-react";
-import { createProject } from "@/app/actions/project-actions";
+import { createProject } from "../actions/project-actions";
 
 const NewProjectForm: React.FC = () => {
   const [showForm, setShowForm] = useState(false);

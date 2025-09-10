@@ -1,7 +1,7 @@
 // src/app/actions/chat-actions.ts
 import * as server from "next/server";
-import { chatWithGemini } from "@/app/lib/ai";
-import { getProjectClient } from "@/app/lib/getProjectClient";
+import { chatWithGemini } from "../lib/ai";
+import { getProjectClient } from "../lib/getProjectClient";
 
 export async function POST(req: server.NextRequest) {
   try {
@@ -21,7 +21,7 @@ export async function POST(req: server.NextRequest) {
       });
     }
 
-    const prisma = await getProjectClient(projectId);  
+    const prisma = await getProjectClient(projectId);
     const tasks = await prisma.task.findMany({
       where: { groupId },
       select: {

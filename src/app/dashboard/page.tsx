@@ -6,7 +6,7 @@ import NewProjectForm from "../components/NewProjectForm";
 import { UserList } from "../components/GroupList";
 import { getProjects } from "../actions/project-actions";
 import { getGroups } from "../actions/group-actions";
-import type { Group, Project } from "@/types";
+import type { Group, Project } from "../../types";
 import ChatBotWidget from "../components/ChatBotWidget";
 import TaskBoard from "../components/TaskBoard";
 

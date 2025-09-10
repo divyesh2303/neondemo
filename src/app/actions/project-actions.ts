@@ -1,12 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createNeonProject } from "@/app/lib/neon";
-import { initializeProjectDatabase } from "@/app/lib/project-init";
-import { neonApiClient } from "@/app/lib/neon-api";
-import type { Project } from "@/types";
-import { pinecone } from "@/app/lib/pinecone";
-import { prismaMaster } from "@/app/lib/prisma-master"; // ✅ updated import
+import { createNeonProject } from "../lib/neon";
+import { initializeProjectDatabase } from "../lib/project-init";
+import { neonApiClient } from "../lib/neon-api";
+import type { Project } from "../../types";
+import { pinecone } from "../lib/pinecone";
+import { prismaMaster } from "../lib/prisma-master"; // ✅ updated import
 
 // Server action to get all projects
 export async function getProjects(): Promise<Project[]> {

@@ -1,10 +1,10 @@
 "use server";
 
-import { prismaMaster } from "@/app/lib/prisma-master"; // master DB
-import { getProjectPrismaClient } from "@/app/lib/prisma-project"; // per-project DB
-import { pinecone } from "@/app/lib/pinecone";
-import { getEmbedding } from "@/app/lib/ai";
-import type { Status, Priority } from "@/app/lib/project-client";
+import { prismaMaster } from "../lib/prisma-master"; // master DB
+import { getProjectPrismaClient } from "../lib/prisma-project"; // per-project DB
+import { pinecone } from "../lib/pinecone";
+import { getEmbedding } from "../lib/ai";
+import type { Status, Priority } from "../lib/project-client";
 
 // --- Utility: Get Pinecone index for a project ---
 async function getTaskIndex(projectId: number) {

@@ -7,8 +7,8 @@ import {
   createGroup,
   updateGroup,
   deleteGroup,
-} from "@/app/actions/group-actions";
-import type { Group } from "@/types";
+} from "../actions/group-actions";
+import type { Group } from "../../types";
 import ClientDate from "./ClientDate";
 
 interface UserListProps {
