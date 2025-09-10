@@ -1,7 +1,9 @@
-import type {
+// types/index.ts
+// src/types/index.ts
+import {
   Status as PrismaStatus,
   Priority as PrismaPriority,
-} from "../app/lib/prisma-project";
+} from "../app/lib/project-client";
 
 export type Status = PrismaStatus;
 export type Priority = PrismaPriority;
