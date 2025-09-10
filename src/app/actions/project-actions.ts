@@ -1,13 +1,13 @@
-// app/actions/project-actions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { prismaMaster } from "@/app/lib/prisma";
 import { createNeonProject } from "@/app/lib/neon";
 import { initializeProjectDatabase } from "@/app/lib/project-init";
 import { neonApiClient } from "@/app/lib/neon-api";
 import type { Project } from "@/types";
 import { pinecone } from "@/app/lib/pinecone";
+import { prismaMaster } from "@/app/lib/prisma-master"; // ✅ updated import
+
 // Server action to get all projects
 export async function getProjects(): Promise<Project[]> {
   try {
@@ -93,7 +93,6 @@ export async function updateProject(id: number, data: { name: string }) {
   }
 
   try {
-    // First get the project to extract Neon project ID
     const project = await prismaMaster.project.findUnique({
       where: { id },
     });
@@ -106,27 +105,22 @@ export async function updateProject(id: number, data: { name: string }) {
     let neonProjectId: string;
 
     if (project.neonProjectId) {
-      // If we have the neonProjectId stored, use it directly
       neonProjectId = project.neonProjectId;
     } else {
-      // Extract from database URL (fallback method)
       neonProjectId = neonApiClient.extractProjectIdFromUrl(
         project.databaseUrl
       );
     }
 
-    // Update in Neon Console
     await neonApiClient.updateProject(neonProjectId, {
       name: data.name.trim(),
     });
 
-    // Update in local database
     const updatedProject = await prismaMaster.project.update({
       where: { id },
       data: { name: data.name.trim() },
     });
 
-    // Revalidate the dashboard page
     revalidatePath("/dashboard");
     revalidatePath(`/dashboard/projects/${id}`);
 

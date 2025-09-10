@@ -1,20 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
-declare global {
- 
-  var prismaMaster: PrismaClient | undefined;
-}
+const globalForPrisma = globalThis as unknown as {
+  prismaMaster?: PrismaClient;
+};
 
 export const prismaMaster =
-  global.prismaMaster ||
+  globalForPrisma.prismaMaster ??
   new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL!, // master DB URL
-      },
-    },
+    datasources: { db: { url: process.env.DATABASE_URL! } },
   });
 
 if (process.env.NODE_ENV !== "production") {
-  global.prismaMaster = prismaMaster;
+  globalForPrisma.prismaMaster = prismaMaster;
 }

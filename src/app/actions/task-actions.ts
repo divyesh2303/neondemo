@@ -1,13 +1,12 @@
-// src/app/actions/task-actions.ts
 "use server";
 
-import { getProjectClient } from "@/app/lib/getProjectClient";
-import type { Status, Priority } from "@/lib/prisma-project";
+import { prismaMaster } from "@/app/lib/prisma-master"; // master DB
+import { getProjectPrismaClient } from "@/app/lib/prisma-project"; // per-project DB
 import { pinecone } from "@/app/lib/pinecone";
 import { getEmbedding } from "@/app/lib/ai";
-import { prismaMaster } from "@/app/lib/prisma";
+import type { Status, Priority } from "@/app/lib/project-client";
 
-// Get Pinecone index dynamically per project
+// --- Utility: Get Pinecone index for a project ---
 async function getTaskIndex(projectId: number) {
   const project = await prismaMaster.project.findUnique({
     where: { id: projectId },
@@ -19,9 +18,17 @@ async function getTaskIndex(projectId: number) {
   return pinecone.index(project.pineconeIndex);
 }
 
+// --- Get tasks in a group ---
 export async function getTasks(projectId: number, groupId: string) {
-  const prisma = await getProjectClient(projectId);
-  return prisma.task.findMany({
+  const project = await prismaMaster.project.findUnique({
+    where: { id: projectId },
+    select: { databaseUrl: true },
+  });
+  if (!project) return [];
+
+  const projectPrisma = getProjectPrismaClient(project.databaseUrl);
+
+  return projectPrisma.task.findMany({
     where: { groupId },
     orderBy: { position: "asc" },
     select: {
@@ -37,6 +44,7 @@ export async function getTasks(projectId: number, groupId: string) {
   });
 }
 
+// --- Create a new task ---
 export async function createTask(
   projectId: number,
   data: {
@@ -47,21 +55,26 @@ export async function createTask(
     groupId: string;
   }
 ) {
-  const prisma = await getProjectClient(projectId);
+  const project = await prismaMaster.project.findUnique({
+    where: { id: projectId },
+    select: { databaseUrl: true },
+  });
+  if (!project) throw new Error("Project not found");
 
-  const task = await prisma.task.create({
+  const projectPrisma = getProjectPrismaClient(project.databaseUrl);
+
+  const task = await projectPrisma.task.create({
     data: {
       title: data.title,
       description: data.description ?? null,
       status: data.status,
       priority: data.priority,
-      groupId: data.groupId, // make sure this is passed
+      groupId: data.groupId,
     },
   });
 
   try {
     const index = await getTaskIndex(projectId);
-
     const embedding = await getEmbedding(
       `${task.title} ${task.description ?? ""}`
     );
@@ -85,6 +98,7 @@ export async function createTask(
   return task;
 }
 
+// --- Update a task ---
 export async function updateTask(
   projectId: number,
   taskId: string,
@@ -95,18 +109,21 @@ export async function updateTask(
     priority?: Priority;
   }
 ) {
-  const prisma = await getProjectClient(projectId);
+  const project = await prismaMaster.project.findUnique({
+    where: { id: projectId },
+    select: { databaseUrl: true },
+  });
+  if (!project) throw new Error("Project not found");
 
-  // 1. Update in DB
-  const task = await prisma.task.update({
+  const projectPrisma = getProjectPrismaClient(project.databaseUrl);
+
+  const task = await projectPrisma.task.update({
     where: { id: taskId },
     data,
   });
 
   try {
     const index = await getTaskIndex(projectId);
-
-    // Always re-embed
     const embedding = await getEmbedding(
       `${task.title} ${task.description ?? ""}`
     );
@@ -130,7 +147,7 @@ export async function updateTask(
   return task;
 }
 
-// Convenience function for frontend drag/drop
+// --- Convenience for drag/drop ---
 export async function updateTaskStatus(
   projectId: number,
   taskId: string,
@@ -139,19 +156,22 @@ export async function updateTaskStatus(
   return updateTask(projectId, taskId, { status });
 }
 
+// --- Delete a task ---
 export async function deleteTask(projectId: number, taskId: string) {
-  const prisma = await getProjectClient(projectId);
+  const project = await prismaMaster.project.findUnique({
+    where: { id: projectId },
+    select: { databaseUrl: true },
+  });
+  if (!project) throw new Error("Project not found");
 
-  // Delete from DB
-  const task = await prisma.task.delete({
+  const projectPrisma = getProjectPrismaClient(project.databaseUrl);
+
+  const task = await projectPrisma.task.delete({
     where: { id: taskId },
   });
 
   try {
-    // Delete from Pinecone
     const index = await getTaskIndex(projectId);
-
-    // Correct way with your SDK
     await index.namespace(task.groupId).deleteMany([String(task.id)]);
   } catch (err) {
     console.error("Failed to delete from Pinecone:", err);

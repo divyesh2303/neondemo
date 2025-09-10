@@ -1,14 +1,13 @@
-// app/actions/group-actions.ts
+// src/app/actions/group-actions.ts
 "use server";
 
-import { getProjectPrismaClient } from "@/app/lib/prisma";
-import { prismaMaster } from "@/app/lib/prisma";
+import { prismaMaster } from "@/app/lib/prisma-master"; // ✅ master client
+import { getProjectPrismaClient } from "@/app/lib/prisma-project"; // ✅ project client
 
 type GroupLite = {
   id: string;
   name: string;
   createdAt: Date;
-  
 };
 
 // Get groups for a project
@@ -90,7 +89,6 @@ export async function updateGroup(
       data: { name: name.trim() },
     });
 
-    // revalidatePath(`/dashboard/projects/${projectId}`);
     return { success: true, group };
   } catch (error) {
     console.error("Failed to update group:", error);
@@ -115,7 +113,6 @@ export async function deleteGroup(
       where: { id: groupId },
     });
 
-    // revalidatePath(`/dashboard/projects/${projectId}`);
     return { success: true };
   } catch (error) {
     console.error("Failed to delete group:", error);

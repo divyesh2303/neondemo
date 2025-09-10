@@ -9,7 +9,10 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:generate": "prisma generate && prisma generate --schema=prisma-project/projectSchema.prisma",
-    "generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma"
+    "generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma",
+    "prisma:generate:master": "prisma generate --schema=prisma/schema.prisma",
+    "prisma:generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma",
+    "prisma:generate": "npm run prisma:generate:master && npm run prisma:generate:project"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
