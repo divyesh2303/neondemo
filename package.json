@@ -1,0 +1,50 @@
+{
+  "name": "neon-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "prisma generate && prisma generate --schema=prisma-project/projectSchema.prisma && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:generate": "prisma generate && prisma generate --schema=prisma-project/projectSchema.prisma",
+    "generate:project": "prisma generate --schema=prisma-project/projectSchema.prisma"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@neondatabase/api-client": "^2.2.0",
+    "@neondatabase/serverless": "^1.0.1",
+    "@pinecone-database/pinecone": "^6.1.2",
+    "@prisma/client": "^6.15.0",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "axios": "^1.11.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.539.0",
+    "next": "^15.5.2",
+    "node-fetch": "^3.3.2",
+    "pg": "^8.16.3",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-hook-form": "^7.62.0",
+    "react-icons": "^5.5.0",
+    "react-markdown": "^10.1.0",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.19.11",
+    "@types/pg": "^8.15.5",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "prisma": "^6.15.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
